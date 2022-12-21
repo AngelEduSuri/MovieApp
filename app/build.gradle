@@ -5,12 +5,12 @@ plugins {
 
 android {
     namespace 'com.aesuriagasalazar.movieapp'
-    compileSdk 32
+    compileSdk 33
 
     defaultConfig {
         applicationId "com.aesuriagasalazar.movieapp"
         minSdk 21
-        targetSdk 32
+        targetSdk 33
         versionCode 1
         versionName "1.0"
 
@@ -79,4 +79,10 @@ dependencies {
 
     // Coil
     implementation "io.coil-kt:coil-compose:$coil_version"
+
+    // Accompanist Pager
+    implementation "com.google.accompanist:accompanist-pager:$accompanist_version"
+
+    // System IU Controller
+    implementation "com.google.accompanist:accompanist-systemuicontroller:$accompanist_version"
 }
