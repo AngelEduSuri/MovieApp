@@ -10,7 +10,8 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.util.*
-import com.aesuriagasalazar.movieapp.framework.ui.common.MovieCard
+import com.aesuriagasalazar.movieapp.framework.ui.components.MovieCard
+import com.aesuriagasalazar.movieapp.framework.ui.components.MovieTopBar
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
@@ -20,7 +21,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
+fun MainScreen(onClickDrawer:() -> Unit, viewModel: MainViewModel = koinViewModel()) {
 
     val uiState = viewModel.uiState.collectAsState().value
     val pagerState = rememberPagerState()
@@ -35,20 +36,13 @@ fun MainScreen(viewModel: MainViewModel = koinViewModel()) {
                         MaterialTheme.colors.primary,
                     )
                 )
-            ),
-        horizontalAlignment = Alignment.CenterHorizontally
+            )
     ) {
+        MovieTopBar(title = "Trending Movies", onClick = onClickDrawer)
         Box(
             modifier = Modifier.fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            Text(
-                text = "Trending Movies",
-                style = MaterialTheme.typography.h5,
-                modifier = Modifier
-                    .align(alignment = Alignment.TopStart)
-                    .padding(start = 16.dp, top = 16.dp)
-            )
             if (uiState.movies.isEmpty()) {
                 CircularProgressIndicator(
                     color = MaterialTheme.colors.secondary,

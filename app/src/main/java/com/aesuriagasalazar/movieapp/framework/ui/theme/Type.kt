@@ -18,9 +18,15 @@ val Merriweahter = FontFamily(
 val Typography = Typography(
     body1 = TextStyle(
         fontFamily = Merriweahter,
-        fontWeight = FontWeight.Normal,
-        fontSize = 16.sp
+        fontWeight = FontWeight.Medium,
+        fontSize = 15.sp
     ),
+    body2 = TextStyle(
+        fontFamily = Merriweahter,
+        fontWeight = FontWeight.Light,
+        fontSize = 13.sp
+    )
+    ,
     h6 = TextStyle(
         fontFamily = Merriweahter,
         fontWeight = FontWeight.Bold,
