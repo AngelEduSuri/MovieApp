@@ -1,4 +1,4 @@
-package com.aesuriagasalazar.movieapp.framework.navigation
+package com.aesuriagasalazar.movieapp.framework.ui.navigation
 
 sealed class NavRoutes(val route: String) {
     object HomeScreen: NavRoutes(route = "home")

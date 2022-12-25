@@ -7,7 +7,7 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.runtime.DisposableEffect
-import com.aesuriagasalazar.movieapp.framework.navigation.MovieAppNavigation
+import com.aesuriagasalazar.movieapp.framework.ui.navigation.MovieAppNavigation
 import com.aesuriagasalazar.movieapp.framework.ui.theme.MovieAppTheme
 import com.aesuriagasalazar.movieapp.framework.ui.theme.PrimaryColorVariantDark
 import com.aesuriagasalazar.movieapp.framework.ui.theme.PrimaryColorVariantLight

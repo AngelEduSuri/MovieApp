@@ -1,7 +1,7 @@
-package com.aesuriagasalazar.movieapp
+package com.aesuriagasalazar.movieapp.framework
 
 import android.app.Application
-import com.aesuriagasalazar.movieapp.data.service.modules.movieModule
+import com.aesuriagasalazar.movieapp.framework.modulesprovider.movieModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin

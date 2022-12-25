@@ -1,4 +1,4 @@
-package com.aesuriagasalazar.movieapp.framework.navigation
+package com.aesuriagasalazar.movieapp.framework.ui.navigation
 
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.MaterialTheme
@@ -11,8 +11,8 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import com.aesuriagasalazar.movieapp.domain.Genre
-import com.aesuriagasalazar.movieapp.framework.navigation.NavRoutes.DetailScreen
-import com.aesuriagasalazar.movieapp.framework.navigation.NavRoutes.HomeScreen
+import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.DetailScreen
+import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.HomeScreen
 import com.aesuriagasalazar.movieapp.framework.ui.components.MovieDrawerContent
 import com.aesuriagasalazar.movieapp.framework.ui.screens.details.MovieScreen
 import com.aesuriagasalazar.movieapp.framework.ui.screens.main.MainScreen
