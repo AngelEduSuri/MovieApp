@@ -6,6 +6,7 @@ buildscript {
         coil_version = '2.2.2'
         accompanist_version = '0.28.0'
         navigation_version = '2.5.3'
+        coroutine_test = '1.6.4'
     }
 }// Top-level build file where you can add configuration options common to all sub-projects/modules.
 plugins {
