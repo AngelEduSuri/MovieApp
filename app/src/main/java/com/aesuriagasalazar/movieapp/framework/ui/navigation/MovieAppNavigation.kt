@@ -5,22 +5,25 @@ import androidx.compose.material.MaterialTheme
 import androidx.compose.material.Scaffold
 import androidx.compose.material.rememberScaffoldState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import com.aesuriagasalazar.movieapp.domain.Genre
+import com.aesuriagasalazar.movieapp.framework.ui.components.MovieDrawerContent
 import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.DetailScreen
 import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.HomeScreen
-import com.aesuriagasalazar.movieapp.framework.ui.components.MovieDrawerContent
 import com.aesuriagasalazar.movieapp.framework.ui.screens.details.MovieScreen
 import com.aesuriagasalazar.movieapp.framework.ui.screens.main.MainScreen
+import com.aesuriagasalazar.movieapp.framework.ui.screens.main.MainViewModel
 import kotlinx.coroutines.launch
+import org.koin.androidx.compose.koinViewModel
 
 @Composable
-fun MovieAppNavigation() {
+fun MovieAppNavigation(viewModel: MainViewModel = koinViewModel()) {
 
+    val uiState = viewModel.uiState.collectAsState().value
     val navController = rememberNavController()
     val scaffoldState = rememberScaffoldState()
     val scope = rememberCoroutineScope()
@@ -30,13 +33,14 @@ fun MovieAppNavigation() {
         scaffoldState = scaffoldState,
         drawerContent = {
             MovieDrawerContent(
-                listOf(
-                    Genre(1, "Action"),
-                    Genre(2, "Adventure"),
-                    Genre(3, "Thriller"),
-                    Genre(4, "Horror"),
-                    Genre(5, "Mystery")
-                )
+                currentGenre = uiState.currentGenre,
+                onGenreClicked = {
+                    scope.launch {
+                        scaffoldState.drawerState.close()
+                    }
+                    viewModel.onGenreSelected(it)
+                },
+                genreState = uiState.dataResponseGenres
             )
         },
         drawerContentColor = MaterialTheme.colors.onBackground
@@ -47,13 +51,19 @@ fun MovieAppNavigation() {
             startDestination = HomeScreen.route
         ) {
             composable(route = HomeScreen.route) {
-                MainScreen(onClickDrawer = {
-                    scope.launch {
-                        scaffoldState.drawerState.apply {
-                            if (isClosed) open() else close()
+                MainScreen(
+                    moviesState = uiState.dataResponsePopularMovies,
+                    currentGenre = uiState.currentGenre,
+                    isGridViewEnabled = uiState.isGridView,
+                    onClickDrawer = {
+                        scope.launch {
+                            scaffoldState.drawerState.apply {
+                                if (isClosed) open() else close()
+                            }
                         }
-                    }
-                })
+                    },
+                    onClickView = viewModel::onGridViewClicked
+                )
             }
             composable(route = DetailScreen.route) {
                 MovieScreen()

@@ -3,32 +3,34 @@ package com.aesuriagasalazar.movieapp.framework.ui.components
 import androidx.compose.animation.animateColor
 import androidx.compose.animation.core.animateFloat
 import androidx.compose.animation.core.animateInt
-import androidx.compose.animation.core.animateValue
 import androidx.compose.animation.core.updateTransition
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.aesuriagasalazar.movieapp.domain.Genre
-import com.aesuriagasalazar.movieapp.framework.ui.theme.MovieAppTheme
+import com.aesuriagasalazar.movieapp.domain.ResultMovieData
 
 @Composable
-fun MovieDrawerContent(categories: List<Genre>, genreSelectedId: Long = 0) {
-
-    var genreSelected by remember { mutableStateOf(1L) }
+fun MovieDrawerContent(
+    currentGenre: Genre,
+    onGenreClicked: (Genre) -> Unit,
+    genreState: ResultMovieData<List<Genre>>
+) {
 
     Column(
         modifier = Modifier
@@ -42,29 +44,55 @@ fun MovieDrawerContent(categories: List<Genre>, genreSelectedId: Long = 0) {
                 )
             )
     ) {
-        LazyColumn {
-            item {
-                MovieProfile(
-                    modifier = Modifier
-                        .height(height = 250.dp)
-                        .fillParentMaxWidth()
-                )
-            }
-            item {
-                Divider(
-                    thickness = 1.dp,
-                    color = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
-                )
-                Spacer(modifier = Modifier.height(height = 8.dp))
-            }
-            items(items = categories) {
-                MovieCategory(
-                    genre = it,
-                    onClick = { id ->
-                        genreSelected = id
-                    },
-                    genreSelectedId = genreSelected
-                )
+        Column(modifier = Modifier.fillMaxWidth()) {
+            MovieProfile(
+                modifier = Modifier
+                    .height(height = 200.dp)
+                    .fillMaxWidth()
+            )
+            Divider(
+                thickness = 1.dp,
+                color = MaterialTheme.colors.onBackground.copy(alpha = 0.7f)
+            )
+            Spacer(modifier = Modifier.height(height = 8.dp))
+        }
+
+        LazyColumn(
+            modifier = Modifier.fillMaxSize(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+
+            when (genreState) {
+                is ResultMovieData.Error -> {
+                    item { Text(text = "${genreState.error}", textAlign = TextAlign.Center) }
+                }
+                ResultMovieData.Loading -> {
+                    item {
+                        MovieProgressIndicator(
+                            modifier = Modifier.size(size = 50.dp),
+                            strokeWidth = 5.dp
+                        )
+                    }
+                }
+                is ResultMovieData.Success -> {
+
+                    item {
+                        MovieCategory(
+                            genre = Genre(0, "Trending Movies"),
+                            currentGenre = currentGenre,
+                            onClick = onGenreClicked
+                        )
+                    }
+
+                    items(genreState.data) {
+                        MovieCategory(
+                            genre = it,
+                            onClick = onGenreClicked,
+                            currentGenre = currentGenre
+                        )
+                    }
+                }
             }
         }
     }
@@ -77,7 +105,7 @@ private fun MovieProfile(modifier: Modifier = Modifier) {
         contentAlignment = Alignment.Center
     ) {
         Card(
-            shape = RoundedCornerShape(percent = 100)
+            shape = CircleShape
         ) {
             Icon(
                 imageVector = Icons.Default.Person,
@@ -92,24 +120,24 @@ private fun MovieProfile(modifier: Modifier = Modifier) {
 }
 
 @Composable
-private fun MovieCategory(genre: Genre, genreSelectedId: Long, onClick: (Long) -> Unit) {
+private fun MovieCategory(genre: Genre, currentGenre: Genre, onClick: (Genre) -> Unit) {
 
-    val transition = updateTransition(targetState = genreSelectedId, "Color Indicator")
+    val transition = updateTransition(targetState = currentGenre, "Color Indicator")
 
     val indicatorColor by transition.animateColor(label = "Left Indicator Color") {
-        if (it == genre.id) MaterialTheme.colors.secondaryVariant else Color.Transparent
+        if (it.id == genre.id) MaterialTheme.colors.secondaryVariant else Color.Transparent
     }
 
     val backgroundColor by transition.animateColor(label = "Background Color") {
-        if (it == genre.id) MaterialTheme.colors.primary else Color.Transparent
+        if (it.id == genre.id) MaterialTheme.colors.primaryVariant.copy(alpha = 0.8f) else Color.Transparent
     }
 
     val fontWeight by transition.animateInt(label = "Font Weight") {
-        if (it == genre.id) 700 else 300
+        if (it.id == genre.id) 700 else 300
     }
 
     val fontAlpha by transition.animateFloat(label = "Font Color Alpha") {
-        if (it == genre.id) 1f else 0.7f
+        if (it.id == genre.id) 1f else 0.7f
     }
 
     Box(
@@ -118,7 +146,7 @@ private fun MovieCategory(genre: Genre, genreSelectedId: Long, onClick: (Long) -
             .height(height = 50.dp)
             .background(backgroundColor)
             .clickable {
-                onClick(genre.id)
+                onClick(genre)
             }
     ) {
         Row(
@@ -141,17 +169,5 @@ private fun MovieCategory(genre: Genre, genreSelectedId: Long, onClick: (Long) -
                 )
             )
         }
-    }
-}
-
-@Preview(widthDp = 250, heightDp = 100)
-@Composable
-fun MovieCategory() {
-    MovieAppTheme {
-        MovieCategory(
-            genre = Genre(12, "Action"),
-            onClick = {},
-            genreSelectedId = 3
-        )
     }
 }

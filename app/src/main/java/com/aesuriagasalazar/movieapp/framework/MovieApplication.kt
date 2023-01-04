@@ -1,7 +1,8 @@
 package com.aesuriagasalazar.movieapp.framework
 
 import android.app.Application
-import com.aesuriagasalazar.movieapp.framework.modulesprovider.movieModule
+import com.aesuriagasalazar.movieapp.framework.modulesprovider.parentPopularMoviesModule
+import com.aesuriagasalazar.movieapp.framework.modulesprovider.retrofitModule
 import org.koin.android.ext.koin.androidContext
 import org.koin.android.ext.koin.androidLogger
 import org.koin.core.context.startKoin
@@ -12,7 +13,7 @@ class MovieApplication: Application() {
         startKoin {
             androidLogger()
             androidContext(this@MovieApplication)
-            modules(movieModule)
+            modules(parentPopularMoviesModule, retrofitModule)
         }
     }
 }
