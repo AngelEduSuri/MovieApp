@@ -1,16 +1,17 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package com.aesuriagasalazar.movieapp.framework.ui.components
 
-import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.material.Card
-import androidx.compose.material.MaterialTheme
-import androidx.compose.material.Text
+import androidx.compose.material.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.BaselineShift
@@ -18,7 +19,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.text.withStyle
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
+import coil.compose.SubcomposeAsyncImage
+import com.aesuriagasalazar.movieapp.R
 import com.aesuriagasalazar.movieapp.domain.Movie
 
 @Composable
@@ -27,7 +29,8 @@ fun MovieCard(
     heightCard: Int = 500,
     elevation: Int = 16,
     movie: Movie,
-    isGridView: Boolean = false
+    isGridView: Boolean = false,
+    onMovieIdClick: (Int) -> Unit
 ) {
 
     val size = if (isGridView) 6.dp else 12.dp
@@ -38,19 +41,33 @@ fun MovieCard(
     val percentStringSize = if (isGridView) 7.sp else 10.sp
     val ratingIndicator = if (isGridView) 2.dp else 5.dp
 
-    Log.i("leer", "Rating: ${(movie.average / 10).toFloat()}")
     Column(
         modifier = modifier.height(height = heightCard.dp)
     ) {
         Card(
+            onClick = { onMovieIdClick(movie.id) },
             modifier = Modifier.aspectRatio(ratio = 2f / 3f),
             shape = MaterialTheme.shapes.small.copy(all = CornerSize(size = size)),
             elevation = elevation.dp
         ) {
-            AsyncImage(
+            SubcomposeAsyncImage(
                 model = movie.poster,
-                contentDescription = null,
-                contentScale = ContentScale.Crop
+                contentDescription = movie.title,
+                contentScale = ContentScale.Crop,
+                loading = {
+                    MovieProgressIndicator(
+                        modifier = Modifier
+                            .fillMaxSize()
+                            .padding(all = 20.dp),
+                        strokeWidth = 2.dp
+                    )
+                },
+                error = {
+                    Image(
+                        painter = painterResource(id = R.drawable.loading_error),
+                        contentDescription = null
+                    )
+                }
             )
         }
         Spacer(modifier = Modifier.height(height = size))

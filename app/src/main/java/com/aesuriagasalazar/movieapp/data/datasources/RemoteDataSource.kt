@@ -8,4 +8,5 @@ interface RemoteDataSource {
     suspend fun getAllGenres(apiKey: String): ResultMovieData<List<Genre>>
     suspend fun getPopularMovies(apiKey: String): ResultMovieData<List<Movie>>
     suspend fun getMoviesFromGenreId(apiKey: String, genreId: Int): ResultMovieData<List<Movie>>
+    suspend fun getMovieDetails(apiKey: String, movieId: Int): ResultMovieData<Movie>
 }

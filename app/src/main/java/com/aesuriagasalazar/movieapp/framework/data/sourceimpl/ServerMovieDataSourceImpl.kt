@@ -41,6 +41,10 @@ class ServerMovieDataSourceImpl(private val movieApiService: MovieApiService) : 
         }
     }
 
+    override suspend fun getMovieDetails(apiKey: String, movieId: Int): ResultMovieData<Movie> {
+        TODO("Not yet implemented")
+    }
+
     private suspend fun getMovies(
         apiKey: String,
         genreId: Int?

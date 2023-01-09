@@ -33,7 +33,8 @@ fun MainScreen(
     currentGenre: Genre,
     isGridViewEnabled: Boolean,
     onClickDrawer: () -> Unit,
-    onClickView: () -> Unit
+    onClickView: () -> Unit,
+    onNextScreen: (Int) -> Unit
 ) {
 
     Column(
@@ -68,11 +69,13 @@ fun MainScreen(
                 )
                 is ResultMovieData.Success -> PopularMovieList(
                     data = moviesState.data,
-                    isGridViewEnabled = isGridViewEnabled
+                    isGridViewEnabled = isGridViewEnabled,
+                    onMovieClick = onNextScreen
                 )
             }
         }
     }
+
 }
 
 @OptIn(ExperimentalPagerApi::class)
@@ -80,7 +83,8 @@ fun MainScreen(
 fun PopularMovieList(
     modifier: Modifier = Modifier,
     data: List<Movie>,
-    isGridViewEnabled: Boolean
+    isGridViewEnabled: Boolean,
+    onMovieClick: (Int) -> Unit
 ) {
 
     val pagerState = rememberPagerState()
@@ -95,7 +99,12 @@ fun PopularMovieList(
             state = gridState
         ) {
             items(data) {
-                MovieCard(movie = it, heightCard = 280, isGridView = true)
+                MovieCard(
+                    movie = it,
+                    heightCard = 280,
+                    isGridView = true,
+                    onMovieIdClick = onMovieClick
+                )
             }
         }
     } else {
@@ -126,7 +135,10 @@ fun PopularMovieList(
                     )
                 }
             ) {
-                MovieCard(movie = data[it])
+                MovieCard(
+                    movie = data[it],
+                    onMovieIdClick = onMovieClick
+                )
             }
         }
     }

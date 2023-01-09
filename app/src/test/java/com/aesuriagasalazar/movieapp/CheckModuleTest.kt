@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, DelicateCoroutinesApi::class)
+@file:OptIn(DelicateCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
 package com.aesuriagasalazar.movieapp
 
-import com.aesuriagasalazar.movieapp.framework.modulesprovider.parentPopularMoviesModule
+import com.aesuriagasalazar.movieapp.framework.modulesprovider.parentMovieDetailsModule
+import com.aesuriagasalazar.movieapp.framework.modulesprovider.parentMoviesModule
 import com.aesuriagasalazar.movieapp.framework.modulesprovider.retrofitModule
 import kotlinx.coroutines.DelicateCoroutinesApi
 import kotlinx.coroutines.Dispatchers
@@ -36,7 +37,7 @@ class CheckModuleTest: KoinTest {
 
     @Test
     fun `check all modules`() = checkModules {
-        modules(parentPopularMoviesModule, retrofitModule)
+        modules(parentMoviesModule, parentMovieDetailsModule, retrofitModule)
     }
 
     @After

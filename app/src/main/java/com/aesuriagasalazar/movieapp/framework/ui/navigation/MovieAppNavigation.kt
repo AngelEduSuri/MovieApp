@@ -8,15 +8,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Modifier
+import androidx.navigation.NavType
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import androidx.navigation.navArgument
 import com.aesuriagasalazar.movieapp.framework.ui.components.MovieDrawerContent
-import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.DetailScreen
-import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.HomeScreen
-import com.aesuriagasalazar.movieapp.framework.ui.screens.details.MovieScreen
+import com.aesuriagasalazar.movieapp.framework.ui.navigation.NavRoutes.*
+import com.aesuriagasalazar.movieapp.framework.ui.screens.details.MovieDetailsScreen
 import com.aesuriagasalazar.movieapp.framework.ui.screens.main.MainScreen
 import com.aesuriagasalazar.movieapp.framework.ui.screens.main.MainViewModel
+import com.aesuriagasalazar.movieapp.framework.ui.screens.splash.MovieSlashScreen
 import kotlinx.coroutines.launch
 import org.koin.androidx.compose.koinViewModel
 
@@ -48,8 +50,21 @@ fun MovieAppNavigation(viewModel: MainViewModel = koinViewModel()) {
         NavHost(
             modifier = Modifier.padding(paddingValues = it),
             navController = navController,
-            startDestination = HomeScreen.route
+            startDestination = SplashScreen.route
         ) {
+
+            composable(route = SplashScreen.route) {
+                MovieSlashScreen(
+                    onTimeOut = {
+                        navController.navigate(route = HomeScreen.route) {
+                            popUpTo(route = SplashScreen.route) {
+                                inclusive = true
+                            }
+                        }
+                    }
+                )
+            }
+
             composable(route = HomeScreen.route) {
                 MainScreen(
                     moviesState = uiState.dataResponsePopularMovies,
@@ -62,11 +77,19 @@ fun MovieAppNavigation(viewModel: MainViewModel = koinViewModel()) {
                             }
                         }
                     },
-                    onClickView = viewModel::onGridViewClicked
+                    onClickView = viewModel::onGridViewClicked,
+                    onNextScreen = { movieId ->
+                        navController.navigate(route = DetailScreen.createRoute(movieId))
+                    }
                 )
             }
-            composable(route = DetailScreen.route) {
-                MovieScreen()
+            composable(
+                route = DetailScreen.route,
+                arguments = listOf(navArgument(name = DetailScreen.arg){
+                    type = NavType.IntType
+                })
+            ) {
+                MovieDetailsScreen()
             }
         }
     }

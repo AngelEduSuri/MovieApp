@@ -5,8 +5,8 @@ import androidx.lifecycle.viewModelScope
 import com.aesuriagasalazar.movieapp.domain.Genre
 import com.aesuriagasalazar.movieapp.domain.Movie
 import com.aesuriagasalazar.movieapp.domain.ResultMovieData
-import com.aesuriagasalazar.movieapp.usecases.LoadMovieGenres
 import com.aesuriagasalazar.movieapp.usecases.LoadAllMovies
+import com.aesuriagasalazar.movieapp.usecases.LoadMovieGenres
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow

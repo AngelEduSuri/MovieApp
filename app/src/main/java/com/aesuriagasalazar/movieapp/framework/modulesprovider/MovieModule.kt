@@ -19,20 +19,20 @@ val repositoryModule = module {
 }
 
 val loadAllMoviesModule = module {
-    single { LoadAllMovies(get()) }
+    factory { LoadAllMovies(get()) }
 }
 
 val loadMovieGenresModule = module {
-    single { LoadMovieGenres(get()) }
+    factory { LoadMovieGenres(get()) }
 }
 
-val viewModelModule = module {
+val movieViewModelModule = module {
     viewModel { MainViewModel(get(), get()) }
 }
 
-val parentPopularMoviesModule = module {
+val parentMoviesModule = module {
     includes(
-        viewModelModule,
+        movieViewModelModule,
         loadAllMoviesModule,
         loadMovieGenresModule,
         repositoryModule,

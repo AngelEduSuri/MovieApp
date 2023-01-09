@@ -15,4 +15,6 @@ class MovieRepository(private val remoteDataSource: RemoteDataSource, private va
     } else {
         remoteDataSource.getMoviesFromGenreId(apiKey, genreId)
     }
+
+    suspend fun loadMovieDetails(movieId: Int): ResultMovieData<Movie> = remoteDataSource.getMovieDetails(apiKey, movieId)
 }
