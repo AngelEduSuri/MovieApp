@@ -89,7 +89,9 @@ fun MovieAppNavigation(viewModel: MainViewModel = koinViewModel()) {
                     type = NavType.IntType
                 })
             ) {
-                MovieDetailsScreen()
+                MovieDetailsScreen(onNavClick = {
+                    navController.popBackStack()
+                })
             }
         }
     }

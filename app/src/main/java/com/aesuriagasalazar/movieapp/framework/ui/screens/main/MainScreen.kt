@@ -1,16 +1,17 @@
 package com.aesuriagasalazar.movieapp.framework.ui.screens.main
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.lazy.grid.rememberLazyGridState
 import androidx.compose.material.*
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.GridView
+import androidx.compose.material.icons.filled.List
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -18,6 +19,7 @@ import androidx.compose.ui.util.*
 import com.aesuriagasalazar.movieapp.domain.Genre
 import com.aesuriagasalazar.movieapp.domain.Movie
 import com.aesuriagasalazar.movieapp.domain.ResultMovieData
+import com.aesuriagasalazar.movieapp.framework.ui.components.MovieBackground
 import com.aesuriagasalazar.movieapp.framework.ui.components.MovieCard
 import com.aesuriagasalazar.movieapp.framework.ui.components.MovieProgressIndicator
 import com.aesuriagasalazar.movieapp.framework.ui.components.MovieTopBar
@@ -37,45 +39,39 @@ fun MainScreen(
     onNextScreen: (Int) -> Unit
 ) {
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                brush = Brush.verticalGradient(
-                    colors = listOf(
-                        MaterialTheme.colors.primaryVariant,
-                        MaterialTheme.colors.primary,
+    val iconView = if (isGridViewEnabled) Icons.Default.List else Icons.Default.GridView
+
+    MovieBackground {
+        Column {
+            MovieTopBar(
+                title = currentGenre.name,
+                onNavClick = onClickDrawer
+            ) {
+                IconButton(onClick = onClickView) {
+                    Icon(imageVector = iconView, contentDescription = null)
+                }
+            }
+            Box(
+                modifier = Modifier.fillMaxSize(),
+                contentAlignment = Alignment.Center
+            ) {
+                when (moviesState) {
+                    is ResultMovieData.Error -> Text(
+                        text = "${moviesState.error}",
+                        textAlign = TextAlign.Center
                     )
-                )
-            )
-    ) {
-        MovieTopBar(
-            title = currentGenre.name,
-            isGridViewEnabled = isGridViewEnabled,
-            onGenreClick = onClickDrawer,
-            onViewClick = onClickView
-        )
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            when (moviesState) {
-                is ResultMovieData.Error -> Text(
-                    text = "${moviesState.error}",
-                    textAlign = TextAlign.Center
-                )
-                ResultMovieData.Loading -> MovieProgressIndicator(
-                    modifier = Modifier.size(size = 80.dp)
-                )
-                is ResultMovieData.Success -> PopularMovieList(
-                    data = moviesState.data,
-                    isGridViewEnabled = isGridViewEnabled,
-                    onMovieClick = onNextScreen
-                )
+                    ResultMovieData.Loading -> MovieProgressIndicator(
+                        modifier = Modifier.size(size = 80.dp)
+                    )
+                    is ResultMovieData.Success -> PopularMovieList(
+                        data = moviesState.data,
+                        isGridViewEnabled = isGridViewEnabled,
+                        onMovieClick = onNextScreen
+                    )
+                }
             }
         }
     }
-
 }
 
 @OptIn(ExperimentalPagerApi::class)

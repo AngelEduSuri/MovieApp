@@ -42,7 +42,21 @@ class ServerMovieDataSourceImpl(private val movieApiService: MovieApiService) : 
     }
 
     override suspend fun getMovieDetails(apiKey: String, movieId: Int): ResultMovieData<Movie> {
-        TODO("Not yet implemented")
+        return try {
+            val movie = movieApiService.getMovieDetails(movieId, apiKey)
+            val new = Movie(
+                movie.id,
+                movie.title,
+                movie.overview,
+                "https://image.tmdb.org/t/p/w780/".plus(movie.backdropPath),
+                movie.releaseDate,
+                movie.voteAverage,
+                listOf()
+            )
+            ResultMovieData.Success(new)
+        } catch (e: Exception) {
+            ResultMovieData.Error(e.message)
+        }
     }
 
     private suspend fun getMovies(

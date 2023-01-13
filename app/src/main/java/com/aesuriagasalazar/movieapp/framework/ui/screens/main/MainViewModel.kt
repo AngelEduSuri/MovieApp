@@ -54,5 +54,5 @@ data class MainViewModelUiState(
     var currentGenre: Genre = Genre(0, "Trending Movies"),
     val dataResponseGenres: ResultMovieData<List<Genre>> = ResultMovieData.Loading,
     val dataResponsePopularMovies: ResultMovieData<List<Movie>> = ResultMovieData.Loading,
-    val isGridView: Boolean = false
+    val isGridView: Boolean = true
 )

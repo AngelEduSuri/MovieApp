@@ -2,7 +2,9 @@ package com.aesuriagasalazar.movieapp.framework.data
 
 import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteListGenreResult
 import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteListPopularMoviesResult
+import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteMovie
 import retrofit2.http.GET
+import retrofit2.http.Path
 import retrofit2.http.Query
 
 interface MovieApiService {
@@ -18,4 +20,10 @@ interface MovieApiService {
         @Query("api_key") apiKey: String,
         @Query("with_genres") genreId: Int
     ): RemoteListPopularMoviesResult
+
+    @GET("movie/{movie_id}?language=es&append_to_response=credits")
+    suspend fun getMovieDetails(
+        @Path("movie_id") movieId: Int,
+        @Query("api_key") apiKey: String
+    ): RemoteMovie
 }
