@@ -24,7 +24,7 @@ class MainViewModel(
     init {
         viewModelScope.launch {
             getMovieGenres()
-            getPopularMovies()
+            getAllMovies()
         }
     }
 
@@ -32,7 +32,7 @@ class MainViewModel(
         _uiState.update { it.copy(dataResponseGenres = loadMovieGenres.invoke()) }
     }
 
-    private suspend fun getPopularMovies() = viewModelScope.launch {
+    private suspend fun getAllMovies() = viewModelScope.launch {
         _uiState.update {
             it.copy(dataResponsePopularMovies = loadAllMovies.invoke(uiState.value.currentGenre.id))
         }
