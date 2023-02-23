@@ -3,9 +3,11 @@ package com.aesuriagasalazar.movieapp.framework.data.sourceimpl
 import com.aesuriagasalazar.movieapp.data.datasources.RemoteDataSource
 import com.aesuriagasalazar.movieapp.domain.Genre
 import com.aesuriagasalazar.movieapp.domain.Movie
+import com.aesuriagasalazar.movieapp.domain.MovieDetails
 import com.aesuriagasalazar.movieapp.domain.ResultMovieData
 import com.aesuriagasalazar.movieapp.framework.data.MovieApiService
 import com.aesuriagasalazar.movieapp.framework.data.domain.toDomainGenres
+import com.aesuriagasalazar.movieapp.framework.data.domain.toDomainMovieDetails
 import com.aesuriagasalazar.movieapp.framework.data.domain.toDomainMovies
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.async
@@ -41,19 +43,10 @@ class ServerMovieDataSourceImpl(private val movieApiService: MovieApiService) : 
         }
     }
 
-    override suspend fun getMovieDetails(apiKey: String, movieId: Int): ResultMovieData<Movie> {
+    override suspend fun getMovieDetails(apiKey: String, movieId: Int): ResultMovieData<MovieDetails> {
         return try {
-            val movie = movieApiService.getMovieDetails(movieId, apiKey)
-            val new = Movie(
-                movie.id,
-                movie.title,
-                movie.overview,
-                "https://image.tmdb.org/t/p/w780/".plus(movie.backdropPath),
-                movie.releaseDate,
-                movie.voteAverage,
-                listOf()
-            )
-            ResultMovieData.Success(new)
+            val movie = movieApiService.getMovieDetails(movieId, apiKey).toDomainMovieDetails()
+            ResultMovieData.Success(movie)
         } catch (e: Exception) {
             ResultMovieData.Error(e.message)
         }

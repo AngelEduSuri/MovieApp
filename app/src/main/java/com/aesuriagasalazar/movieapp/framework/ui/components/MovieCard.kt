@@ -25,6 +25,7 @@ import coil.compose.SubcomposeAsyncImage
 import com.aesuriagasalazar.movieapp.R
 import com.aesuriagasalazar.movieapp.domain.Movie
 
+@OptIn(ExperimentalMaterialApi::class)
 @Composable
 fun MovieCard(
     modifier: Modifier = Modifier,
@@ -78,7 +79,7 @@ fun MovieCard(
                     .align(Alignment.BottomStart)
                     .padding(start = 16.dp),
                 ratingSize = ratingSize,
-                movie = movie,
+                average = movie.average,
                 percentStringSize = percentStringSize,
                 ratingTitleSize = ratingTitleSize,
                 ratingIndicator = ratingIndicator
@@ -111,7 +112,7 @@ fun MovieCard(
             }
             if (isGridView.not()) MovieRating(
                 ratingSize = ratingSize,
-                movie = movie,
+                average = movie.average,
                 percentStringSize = percentStringSize,
                 ratingTitleSize = ratingTitleSize,
                 ratingIndicator = ratingIndicator
@@ -121,10 +122,10 @@ fun MovieCard(
 }
 
 @Composable
-private fun MovieRating(
+fun MovieRating(
     modifier: Modifier = Modifier,
     ratingSize: Dp,
-    movie: Movie,
+    average: Double,
     percentStringSize: TextUnit,
     ratingTitleSize: TextUnit,
     ratingIndicator: Dp
@@ -147,7 +148,7 @@ private fun MovieRating(
             ) {
                 Text(
                     text = buildAnnotatedString {
-                        append(text = "${(movie.average * 10).toInt()}")
+                        append(text = "${(average * 10).toInt()}")
                         withStyle(
                             style = SpanStyle(
                                 baselineShift = BaselineShift.Superscript,
@@ -164,7 +165,7 @@ private fun MovieRating(
                     modifier = Modifier.fillMaxSize(),
                     color = MaterialTheme.colors.secondary,
                     strokeWidth = ratingIndicator,
-                    progress = (movie.average / 10).toFloat()
+                    progress = (average / 10).toFloat()
                 )
             }
         }

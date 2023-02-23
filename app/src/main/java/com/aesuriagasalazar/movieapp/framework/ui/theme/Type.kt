@@ -41,6 +41,10 @@ val Typography = Typography(
         fontFamily = Merriweahter,
         fontWeight = FontWeight.Bold,
         fontSize = 30.sp
+    ),
+    subtitle2 = TextStyle(
+        fontSize = 12.sp,
+        fontWeight = FontWeight.Normal
     )
     /* Other default text styles to override
     button = TextStyle(

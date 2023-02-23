@@ -2,7 +2,7 @@ package com.aesuriagasalazar.movieapp.framework.data
 
 import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteListGenreResult
 import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteListPopularMoviesResult
-import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteMovie
+import com.aesuriagasalazar.movieapp.framework.data.domain.RemoteMovieDetails
 import retrofit2.http.GET
 import retrofit2.http.Path
 import retrofit2.http.Query
@@ -25,5 +25,5 @@ interface MovieApiService {
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
-    ): RemoteMovie
+    ): RemoteMovieDetails
 }
