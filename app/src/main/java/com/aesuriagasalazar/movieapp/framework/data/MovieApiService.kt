@@ -9,10 +9,10 @@ import retrofit2.http.Query
 
 interface MovieApiService {
 
-    @GET("genre/movie/list?language=es")
+    @GET("genre/movie/list?language=en")
     suspend fun getMoviesGenre(@Query("api_key") apiKey: String): RemoteListGenreResult
 
-    @GET("movie/popular?language=es&page=1")
+    @GET("movie/popular?language=en&page=1")
     suspend fun getPopularMovies(@Query("api_key") apiKey: String): RemoteListPopularMoviesResult
 
     @GET("discover/movie?language=es&sort_by=popularity.desc&page=1")
@@ -21,7 +21,7 @@ interface MovieApiService {
         @Query("with_genres") genreId: Int
     ): RemoteListPopularMoviesResult
 
-    @GET("movie/{movie_id}?language=es&append_to_response=credits")
+    @GET("movie/{movie_id}?language=en&append_to_response=credits")
     suspend fun getMovieDetails(
         @Path("movie_id") movieId: Int,
         @Query("api_key") apiKey: String
