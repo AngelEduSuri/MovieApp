@@ -6,8 +6,14 @@ A simple Android app about **a movie app with data gotten from The Movie DB**. I
 | ![Movie App - 1](https://i.postimg.cc/9Q6Xzc59/Screenshot-1684863088.png) | ![Movie App - 2](https://i.postimg.cc/Wb41H9wd/Screenshot-1684863130.png) | ![Movie App - 4](https://i.postimg.cc/c45LyQFX/Screenshot-1684863126.png) | ![Movie App - 5](https://i.postimg.cc/7ZGYxfcD/Screenshot-1684863168.png) |
 |:-------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|:-------------------------------------------------------------------------:|
 
-<div style="text-align: center;">
-  <img src="https://i.postimg.cc/QCpKYByZ/movie-app.gif" width="200px">
+<div style="display:flex;justify-content:center">
+
+<div style="width:200px">
+
+![movie app gif](https://i.postimg.cc/QCpKYByZ/movie-app.gif)
+
+</div>
+
 </div>
 
 ---
